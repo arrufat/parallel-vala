@@ -36,7 +36,6 @@ public class Main : Object {
 		}
 
 		var amount = last - first + 1;
-		message (@"$amount");
 
 		if (args_length == 1 || amount < 1) {
 			print (help + "\n");
@@ -48,10 +47,6 @@ public class Main : Object {
 			num_threads = get_num_processors ();
 		}
 
-		if (amount < num_threads) {
-			num_threads = amount;
-		}
-		
 		var array = new int[last - first + 1];
 		var par = new ParArray<int> ();
 		par.data = array;

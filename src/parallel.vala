@@ -34,6 +34,7 @@ namespace Parallel {
 		public void dispatch () {
 			try {
 				if (this.num_threads < 1) this.num_threads = get_num_processors ();
+				if (this.data.length < this.num_threads) this.num_threads = this.data.length;
 				var threads = new ThreadPool<ParArray<G>>.with_owned_data (
 					(ThreadPoolFunc<ParArray<G>>) this.function,
 					(int) this.num_threads, this.exclusive);
