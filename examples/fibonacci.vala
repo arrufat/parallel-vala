@@ -35,7 +35,10 @@ public class Main : Object {
 			return 0;
 		}
 
-		if (args_length == 1 || last < first) {
+		var amount = last - first + 1;
+		message (@"$amount");
+
+		if (args_length == 1 || amount < 1) {
 			print (help + "\n");
 			return 0;
 		}
@@ -44,15 +47,20 @@ public class Main : Object {
 		if (num_threads < 1) {
 			num_threads = get_num_processors ();
 		}
+
+		if (amount < num_threads) {
+			num_threads = amount;
+		}
 		
 		var array = new int[last - first + 1];
 		var par = new ParArray<int> ();
 		par.data = array;
+		par.num_threads = num_threads;
 		par.function = compute_fibonacci;
 		par.dispatch ();
 
 		for (var i = 0; i < array.length; i++) {
-			print ("Fibonacci (%d) = %u\n", i, array[i]);
+			print ("Fibonacci (%d) = %u\n", i + first, array[i]);
 		}
 
 		return 0;
