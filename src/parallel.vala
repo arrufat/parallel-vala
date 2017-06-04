@@ -1,11 +1,11 @@
 namespace Parallel {
+	public delegate void Processor<G> (ParArray<G> w);
 	public class ParArray<G> : Object {
 		public unowned G[] data { get; set; }
 		public uint num_threads { get; set; default = 0; }
 		public uint start { get; set; default = 0; }
 		public uint end { get; set; default = 0; }
 		public bool exclusive { get; set; default = true; }
-		public delegate void Processor<G> (ParArray<G> w);
 		public Processor<G> function;
 
 		/**
