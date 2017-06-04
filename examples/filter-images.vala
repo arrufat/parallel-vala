@@ -52,12 +52,13 @@ public class Main : Object {
 		/* get all files from directory */
 		string file_name;
 		var base_dir = directory[0];
-		var files = new Array<string> ();
+
+		string[] files = {};
 		try {
 			var dir = Dir.open (base_dir);
 			while ((file_name = dir.read_name ()) != null) {
 				var file_path = Path.build_filename (base_dir, file_name);
-				files.append_val (file_path);
+				files += file_path;
 			}
 		} catch (FileError fe) {
 			error (fe.message);
@@ -65,31 +66,25 @@ public class Main : Object {
 		var num_files = files.length;
 		message ("Found %u files", num_files);
 
-		/* convert the GLib.Array into an string[] */
-		var lst = new string[num_files];
-		for (var i = 0; i < lst.length; i++) {
-			lst[i] = files.index (i);
-		}
-
 		if (num_files < num_threads) {
 			num_threads = (int) num_files;
 		}
 		message ("Using %d threads", num_threads);
 
 		var par = new ParArray<string> ();
-		par.data = lst;
+		par.data = files;
 		par.function = filter_images;
 		par.dispatch ();
 
-		/* fill an array with image files only */
-		var imgs = new Array<string> ();
-		for (var i = 0; i < lst.length; i ++) {
-			if (lst[i] != null) {
-				imgs.append_val (lst[i]);
-				stdout.printf (lst[i] + "\n");
+		/* count the number of images found */
+		var num_imgs = 0;
+		foreach (var f in files) {
+			if (f != null) {
+				stdout.printf (f + "\n");
+				num_imgs++;
 			}
 		}
-		message ("Found %u images", imgs.length);
+		message ("Found %u images", num_imgs);
 
 		return 0;
 	}
