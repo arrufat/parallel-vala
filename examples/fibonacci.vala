@@ -50,7 +50,6 @@ public class Main : Object {
 		var array = new int[last - first + 1];
 		var par = new ParArray<int> ();
 		par.data = array;
-		par.num_threads = num_threads;
 		par.function = compute_fibonacci;
 		par.dispatch ();
 
@@ -71,8 +70,5 @@ int fibonacci (int n) {
 }
 
 void compute_fibonacci (ParArray<int> w) {
-	for (var i = w.start; i <= w.end; i++) {
-		debug ("start: %u, end: %u => %u", w.start, w.end, i);
-		w.data[(int) i] = fibonacci (first + (int) i);
-	}
+		w.data[w.index] = fibonacci (first + w.index);
 }

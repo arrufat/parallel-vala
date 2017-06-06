@@ -91,23 +91,21 @@ public class Main : Object {
 }
 
 void filter_images (ParArray<string> w) {
-	for (var i = w.start; i <= w.end; i++) {
-		var file_path = w.data[i];
-		try {
-			int width, height;
-			if (fast) {
-				Gdk.Pixbuf.get_file_info (file_path, out width, out height);
-			} else {
-				var img = new Gdk.Pixbuf.from_file (file_path);
-				width = img.width;
-				height = img.height;
-			}
-			if (width < size || height < size) {
-				w.data[i] = null;
-			}
-		} catch (Error e) {
-			w.data[i] = null;
-			message ("i = %06u => %s (%s)", i, file_path, e.message);
+	var file_path = w.data[w.index];
+	try {
+		int width, height;
+		if (fast) {
+			Gdk.Pixbuf.get_file_info (file_path, out width, out height);
+		} else {
+			var img = new Gdk.Pixbuf.from_file (file_path);
+			width = img.width;
+			height = img.height;
 		}
+		if (width < size || height < size) {
+			w.data[w.index] = null;
+		}
+	} catch (Error e) {
+		w.data[w.index] = null;
+		message ("i = %06u => %s (%s)", w.index, file_path, e.message);
 	}
 }
