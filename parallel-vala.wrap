@@ -1,0 +1,4 @@
+[wrap-git]
+directory=parallel-vala
+url=https://github.com/arrufat/parallel-vala.git
+revision=head

@@ -21,14 +21,28 @@ libparallel = library('parallel',
     dependencies: deps,
     vala_header: 'parallel.h',
     vala_vapi: 'parallel.vapi',
+    install_dir: [true, true, true],
     install: true)
 
-executable('fibonacci',
-    sources: [srcs, 'examples/fibonacci.vala'],
-    dependencies: deps,
-    install: false)
+parallel_dep = declare_dependency(
+    include_directories: include_directories('.'),
+    link_with: libparallel)
 
-executable('filter-images',
-    sources: [srcs, 'examples/filter-images.vala'],
-    dependencies: [deps, gdk_pixbuf],
-    install: false)
+pkg = import('pkgconfig')
+pkg.generate(
+    libraries: libparallel,
+    version: meson.project_version(),
+    name: 'parallel',
+    description: 'Ease parallel processing on native Vala arrays')
+
+if get_option('enable-examples')
+    executable('fibonacci',
+        sources: [srcs, 'examples/fibonacci.vala'],
+        dependencies: deps,
+        install: false)
+
+    executable('filter-images',
+        sources: [srcs, 'examples/filter-images.vala'],
+        dependencies: [deps, gdk_pixbuf],
+        install: false)
+endif

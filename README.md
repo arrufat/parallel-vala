@@ -5,6 +5,7 @@ Parallel Vala is a class that eases parallel processing for Vala arrays.
 Here's an example about how to compute the first 30 Fibonacci numbers in parallel:
 
 ``` vala
+using GLib;
 using Parallel;
 
 int main (string [] args) {
@@ -30,9 +31,20 @@ int fibonacci (int n) {
 	}
 }
 
-void compute_fibonacci (ParArray<int> w) {
-	for (var i = w.start; i <= w.end; i++) {
-		w.data[(int) i] = fibonacci ((int) i);
-	}
+void compute_fibonacci (ParArray<int> p) {
+	p.data[p.index] = fibonacci (p.index);
 }
 ```
+
+To use it in your code, simply add these lines to your `meson.build`:
+
+``` meson
+
+parallel = subproject('parallel')
+parallel_dep = parallel.get_variable('parallel_dep')
+```
+
+Then, add `parallel_dep` to your dependencies array.
+Finally, copy the [`parallel-vala.wrap`][wrap] to your `subprojects` folder.
+
+[wrap]:https://raw.githubusercontent.com/arrufat/parallel-vala/master/parallel-vala.wrap
