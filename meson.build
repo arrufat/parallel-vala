@@ -2,12 +2,6 @@ project('Parallel Vala', ['vala', 'c'],
     default_options: ['buildtype=release', 'default_library=shared'],
     version: '0.1.0')
 
-if get_option('buildtype') == 'release'
-    if meson.get_compiler('c').has_argument('-march=native')
-        add_global_arguments('-march=native', language: 'c')
-    endif
-endif
-
 glib = dependency('glib-2.0')
 gobject = dependency('gobject-2.0')
 gdk_pixbuf = dependency('gdk-pixbuf-2.0')
