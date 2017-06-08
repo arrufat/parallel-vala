@@ -4,15 +4,21 @@ project('Parallel Vala', ['vala', 'c'],
 
 glib = dependency('glib-2.0')
 gobject = dependency('gobject-2.0')
-gdk_pixbuf = dependency('gdk-pixbuf-2.0')
 
 deps = [glib, gobject]
 
 srcs = ['src/parallel.vala']
 
-libparallel = library('parallel',
+if get_option('shared_lib')
+  libtype = 'shared_library'
+else
+  libtype = 'static_library'
+endif
+
+libparallel = build_target('parallel',
     sources: srcs,
     dependencies: deps,
+    target_type: libtype,
     vala_header: 'parallel.h',
     vala_vapi: 'parallel.vapi',
     install_dir: [true, true, true],
@@ -29,7 +35,8 @@ pkg.generate(
     name: 'parallel',
     description: 'Ease parallel processing on native Vala arrays')
 
-if get_option('enable-examples')
+if get_option('enable_examples')
+    gdk_pixbuf = dependency('gdk-pixbuf-2.0')
     executable('fibonacci',
         sources: [srcs, 'examples/fibonacci.vala'],
         dependencies: deps,
