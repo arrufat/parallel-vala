@@ -50,6 +50,7 @@ public class Main : Object {
 		var array = new int[last - first + 1];
 		var par = new ParArray<int> ();
 		par.data = array;
+		par.num_threads = num_threads;
 		par.function = compute_fibonacci;
 		par.dispatch ();
 
