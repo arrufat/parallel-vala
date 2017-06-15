@@ -73,5 +73,5 @@ int fibonacci (int n) {
 void compute_fibonacci (ParArray<int> w) {
 	/* compute largest first, as they take longer */
 	var index = last - (first + w.index);
-	w.data[index] = fibonacci (index);
+	w.data[index] = fibonacci (index + first);
 }
